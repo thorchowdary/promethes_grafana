@@ -1,0 +1,101 @@
+monitoring/observability:
+------------------------------
+metrices/traces
+    -grafana/prometheus(open source, less cost, flexibility)
+    -dataDog
+    -app Dynamics
+
+logging:
+----------
+1.ELK/splunk
+
+what kind of metrices you monitor:
+----------------------------------
+1.cpu
+2.memory
+3.target group health etc.....
+
+why you need monitoring:
+-----------------------------
+to make the proactive monitoring for the business
+
+ec2(agent) ---- promethues(database-timeseries data)(PROM QL)-----grafana(visulaizes the data)
+
+agents----sents data to datasource-----grafana uses the data source and does visualization
+
+Datasources:
+------------
+1.promethues
+2.cloud watch
+3.influx db ect....
+
+how many ec2 instances are running promql:-
+--------------------------------------------
+up {job=aws_ec2}
+count(up)
+
+how to run a process in background:
+-----------------------------------
+nohup processScript &
+
+& is important and it is the reason to run process in background
+
+nohup it is just for nohup.out file 
+
+setup:
+------
+1. ec2 with apache & install exporters
+   to collect ec2 data(cpu/memory/storage....) ----- NODE EXPORTER
+   to collect apache data -------------------------- APACHE EXPORTER
+
+*code + emitting metrices = exporter---->promethues
+
+to start exporters:
+-------------------
+./node_exporter & (run in background)
+
+to read files:
+----------------
+cat/more/less/vi/tail/head/grep
+
+to kill process:
+----------------
+kill -9 processId
+
+to kill heap & thread dump:
+---------------------------
+kill -3 pid
+
+first process in linux-->systemcd
+
+node_exporter----------prometheus(promethues.yaml)
+we need to configure node exporter in promethues.yaml file
+
+to searc a file----> "find / -name fileName"
+
+* prometheus will collect data for every "15 sec"
+
+* recommended to download all files in temp folder "/tmp" and install in "/opt" folder
+
+*** cloud watch is a regional service:
+--------------------------------------
+if you need to monitor 10 AWS accounts you need to "10 cloud watch" instead of that we cna configure "grafana" central place for all the regions & for all accounts
+
+
+applicagtion[node exporter]-------------collect metrices-------grafana/promethues
+               |
+               |
+                ------------------------collect logs----------ELK(Elastic search, logstash, kibana)
+
+settup apache exporter:
+-------------------------
+1. Download the exporters(node exporter + apache exporter ) 
+2. Extract & rename & start
+3. configure the promethues(prometheus.yml file)
+    job name:
+    scrape_config:http://privateIp(ec2 ip address)
+
+4. import node exporter dashboard in grafana
+
+find out last 90 days modified file---->find /path -mtime-90
+
